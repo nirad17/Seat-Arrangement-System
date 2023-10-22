@@ -22,9 +22,8 @@ class Exam {
     Room room;  // Store the associated room
     List<Student> assignedStudents;
 
-    public Exam(String name, Date date) {
+    public Exam(String name) {
         this.name = name;
-        this.date = date;
         this.assignedStudents = new ArrayList<>();
     }
 }
@@ -42,12 +41,21 @@ class Room {
 
 public class SeatAllocation {
     public static void main(String[] args) throws IOException {
+        System.out.println("Starting with the Seat Arrangement System...");
+        System.out.println("Getting the students details... ");
         List<Student> students = readStudentsFromCSV("students.csv");
+        System.out.println("Getting the Exams detail ... ");
         List<Exam> exams = readExamsFromCSV("exams.csv");
+        System.out.println("Checking the available rooms for exam ... ");
         List<Room> rooms = readRoomsFromCSV("rooms.csv");
+        System.out.println("Starting allocation process ...");
+        try {
+            allocateSeats(students, exams, rooms);
+        } catch (Exception e) {
+            System.out.println("Error in allocation : "+e);
+        }
 
-        allocateSeats(students, exams, rooms);
-
+        System.out.println("Creating the allocation file...");
         writeOutputToCSV("output.csv", exams);
     }
 
@@ -72,7 +80,6 @@ public class SeatAllocation {
 
     public static List<Exam> readExamsFromCSV(String filePath) throws IOException {
         List<Exam> exams = new ArrayList<>();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         try (Scanner scanner = new Scanner(Paths.get(filePath))) {
             scanner.nextLine(); // Skip header
@@ -80,9 +87,8 @@ public class SeatAllocation {
             while (scanner.hasNextLine()) {
                 String[] parts = scanner.nextLine().split(",");
                 String name = parts[0];
-                Date date = dateFormat.parse(parts[1]);
 
-                exams.add(new Exam(name, date));
+                exams.add(new Exam(name));
             }
         } catch (Exception pe) {
             System.out.println(pe);
@@ -109,37 +115,63 @@ public class SeatAllocation {
         return rooms;
     }
 
-    public static void allocateSeats(List<Student> students, List<Exam> exams, List<Room> rooms) {
+    public static void allocateSeats(List<Student> students, List<Exam> exams, List<Room> rooms) throws Exception{
+        // Step 1: Calculate the number of students registered for each exam
+        System.out.println("Started with Exam Scheduling Process ... ");
+        Map<String, Integer> examRegistrationCounts = new HashMap<>();
+        for (Student student : students) {
+            for (String examName : student.registeredExams) {
+                examRegistrationCounts.put(examName, examRegistrationCounts.getOrDefault(examName, 0) + 1);
+            }
+        }
+
+        // Step 2: Sort exams based on the number of registered students
+//        exams.sort(Comparator.comparingInt(exam -> examRegistrationCounts.get(exam.name)));
+        // Sort exams based on the number of registered students (more students first)
+        exams.sort((e1, e2) -> Integer.compare(e2.assignedStudents.size(), e1.assignedStudents.size()));
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date currentDate = dateFormat.parse("2023-10-15"); // Start date
+
         Random random = new Random();
 
         for (Exam exam : exams) {
-            // Assign a random room from the list
-            Room randomRoom = rooms.get(random.nextInt(rooms.size()));
-            exam.room = randomRoom;
+            // Step 3: Assign a date to the exam
+            exam.date = currentDate;
 
-            for (Room room : rooms) {
-                if (room == randomRoom) {
-                    List<Student> eligibleStudents = new ArrayList<>(exam.assignedStudents);
+            // Increment the date for the next exam
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(currentDate);
+            calendar.add(Calendar.DATE, 1); // Increment the date by one day
+            currentDate = calendar.getTime();
 
-                    for (Student student : students) {
-                        if (student.registeredExams.contains(exam.name) && !eligibleStudents.contains(student)) {
-                            eligibleStudents.add(student);
-                        }
-                    }
+            // Step 4: Allocate a room to the exam based on room capacity
+            List<Room> eligibleRooms = new ArrayList<>(rooms);
+            Collections.shuffle(eligibleRooms);
 
-                    Collections.shuffle(eligibleStudents);
+            for (Room room : eligibleRooms) {
+                if (room.capacity >= exam.assignedStudents.size()) {
+                    exam.room = room;
+                    break;
+                }
+            }
 
-                    int availableSeats = room.capacity;
-                    for (Student student : eligibleStudents) {
-                        if (availableSeats > 0) {
-                            exam.assignedStudents.add(student);
-                            int indexExam = student.registeredExams.indexOf(exam.name);
-                            student.registeredExams.remove(indexExam);
-                            availableSeats--;
-                        } else {
-                            break;
-                        }
-                    }
+            // Assign students to the exam
+            List<Student> eligibleStudents = new ArrayList<>();
+            for (Student student : students) {
+                if (student.registeredExams.contains(exam.name)) {
+                    eligibleStudents.add(student);
+                }
+            }
+
+            Collections.shuffle(eligibleStudents);
+
+            for (Student student : eligibleStudents) {
+                if (exam.assignedStudents.size() < exam.room.capacity) {
+                    exam.assignedStudents.add(student);
+                    student.registeredExams.remove(exam.name);
+                } else {
+                    break;
                 }
             }
         }

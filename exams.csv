@@ -1,92 +1,17 @@
-Subject,Date
-Math,2023-10-01
-Physics,2023-10-02
-Chemistry,2023-10-03
-History,2023-10-04
-English,2023-10-05
-Biology,2023-10-06
-Math,2023-10-07
-Physics,2023-10-08
-Chemistry,2023-10-09
-History,2023-10-10
-English,2023-10-11
-Biology,2023-10-12
-Math,2023-10-13
-Physics,2023-10-14
-Chemistry,2023-10-15
-History,2023-10-16
-English,2023-10-17
-Biology,2023-10-18
-Math,2023-10-19
-Physics,2023-10-20
-Chemistry,2023-10-21
-History,2023-10-22
-English,2023-10-23
-Biology,2023-10-24
-Math,2023-10-25
-Physics,2023-10-26
-Chemistry,2023-10-27
-History,2023-10-28
-English,2023-10-29
-Biology,2023-10-30
-Math,2023-10-31
-Physics,2023-11-01
-Chemistry,2023-11-02
-History,2023-11-03
-English,2023-11-04
-Biology,2023-11-05
-Math,2023-11-06
-Physics,2023-11-07
-Chemistry,2023-11-08
-History,2023-11-09
-English,2023-11-10
-Biology,2023-11-11
-Math,2023-11-12
-Physics,2023-11-13
-Chemistry,2023-11-14
-History,2023-11-15
-English,2023-11-16
-Biology,2023-11-17
-Math,2023-11-18
-Physics,2023-11-19
-Chemistry,2023-11-20
-History,2023-11-21
-English,2023-11-22
-Biology,2023-11-23
-Math,2023-11-24
-Physics,2023-11-25
-Chemistry,2023-11-26
-History,2023-11-27
-English,2023-11-28
-Biology,2023-11-29
-Math,2023-11-30
-Physics,2023-12-01
-Chemistry,2023-12-02
-History,2023-12-03
-English,2023-12-04
-Biology,2023-12-05
-Math,2023-12-06
-Physics,2023-12-07
-Chemistry,2023-12-08
-History,2023-12-09
-English,2023-12-10
-Biology,2023-12-11
-Math,2023-12-12
-Physics,2023-12-13
-Chemistry,2023-12-14
-History,2023-12-15
-English,2023-12-16
-Biology,2023-12-17
-Math,2023-12-18
-Physics,2023-12-19
-Chemistry,2023-12-20
-History,2023-12-21
-English,2023-12-22
-Biology,2023-12-23
-Math,2023-12-24
-Physics,2023-12-25
-Chemistry,2023-12-26
-History,2023-12-27
-English,2023-12-28
-Biology,2023-12-29
-Math,2023-12-30
+Subject,
+DBMS,
+OOPS,
+Computer Networks,
+Fundamentals EEE,
+OS,
+Discrete Maths,
+DSA,
+Compiler Design,
+Cloud Computing,
+Java Programming,
+Programming Paradigms,
+Blockchain Technologies,
+Advanced C,
+Data Visualization,
+Microprocessors,
+IOT
